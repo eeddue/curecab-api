@@ -17,6 +17,11 @@ app.use("/api/v1/couriers", require("./routes/couriers"));
 app.use("/api/v1/facilities", require("./routes/facilities"));
 app.use("/api/v1/ussd", require("./routes/ussd"));
 
+app.get("/", (req, res) => {
+  res.send("Server is running.");
+});
+
+
 app.listen(port, () => {
   DbConnect();
   console.log("Server running on port " + port);
