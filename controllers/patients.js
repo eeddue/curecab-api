@@ -32,6 +32,12 @@ const registerPatient = async (req, res) => {
         .status(404)
         .json({ msg: "This CCC number has already been registered." });
 
+    user = await Patient.findOne({ phone });
+    if (user)
+      return res
+        .status(404)
+        .json({ msg: "This phone number has already been registered." });
+
     user = EMR_Patients.find((p) => p.ccc_no === ccc_no);
     if (user.id_no !== id_no)
       return res.status(404).json({ msg: "Wrong ID number." });
