@@ -1,12 +1,11 @@
+const router = require("express").Router();
 const { facilities } = require("../lib/facilities");
 const Greetings = require("../lib/greetings");
 const Patient = require("../models/patient");
 const Order = require("../models/order");
 const { couriers } = require("../lib/couriers");
-const sendMessage = require("../lib/sms");
 const generateOrderId = require("../lib/orderId");
-
-const router = require("express").Router();
+const sendMessage = require("../lib/sms");
 
 const getUserNextOrderDate = (days) => {
   const time = parseInt(days) * 24 * 60 * 60 * 1000;
@@ -25,7 +24,6 @@ router.post("/", (req, res) => {
   if (text == "") {
     Patient.findOne({ phone: phoneNumber })
       .then((user) => {
-        console.log(user);
         if (!user) {
           response = `END You are not yet registered. \n Use our website (curecab.com) or mobile app (Curecab) to register. \n`;
         } else {
