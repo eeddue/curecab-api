@@ -45,9 +45,15 @@ const makeOrder = async (req, res) => {
 
     const { password, ...userData } = user._doc;
 
+    //send message to the patient
     sendMessage(
-      facility.phone,
+      "+254114357926",
       `Your order ${orderId} has been made successfully. Awaiting approval and delivery.`
+    );
+    //send message to the clinician
+    sendMessage(
+      "+254114357926",
+      `A new order with order ID - ${orderId} has been made. Login to the dashboard for approval and processing.`
     );
 
     return res.status(200).json({
@@ -61,15 +67,31 @@ const makeOrder = async (req, res) => {
 };
 
 const updateOrder = async (req, res) => {
+  const { delivery_fee, initialFee, next_order, initial_next_order, userId } =
+    req.body;
   try {
     const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
 
-    if (req.body.delivery_fee !== req.body.initialFee) {
+    // const isDateChanged =
+    //   new Date(next_order).getDate() !== new Date(initial_next_order).getDate();
+    // if (isDateChanged) {
+    //   await Patient.findByIdAndUpdate(userId, {
+    //     next_order: new Date(next_order),
+    //   });
+    //   sendMessage(
+    //     "+254114357926",
+    //     `Your order has been confirmed. Due to pills shortage, we can only provide pills to cover you upto ${new Date(
+    //       next_order
+    //     )}. We apologize for our inconveniences.`
+    //   );
+    // }
+
+    if (delivery_fee !== initialFee) {
       sendMessage(
         "+254114357926",
-        `Your order has been confirmed. Your total delivery fee is Ksh ${req.body.delivery_fee}.`
+        `Your order has been confirmed. Your total delivery fee is Ksh ${req.body.delivery_fee}. Your order is now on transit.`
       );
     }
 

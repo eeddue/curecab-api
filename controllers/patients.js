@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
 const Patient = require("../models/patient");
-const EMR_Patients = require("../lib/EMR_patients");
 const { decodeToken, createToken } = require("../lib/jwt");
 const sendMessage = require("../lib/sms");
+const EMR_Patients = require("../lib/EMR_Patients");
 
 const validatePatient = async (req, res) => {
   const { ccc_no } = req.body;
@@ -149,6 +149,19 @@ const getPatients = async (req, res) => {
   }
 };
 
+const getPatient = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.patientId);
+
+    const { password, ...userData } = patient._doc;
+    return res.status(200).json({
+      patient: userData,
+    });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
 module.exports = {
   registerPatient,
   validatePatient,
@@ -157,4 +170,5 @@ module.exports = {
   forgotPassword,
   updatePatient,
   getPatients,
+  getPatient,
 };
