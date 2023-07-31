@@ -19,7 +19,7 @@ const OrderSchema = new mongoose.Schema({
   },
   orderDate: {
     type: Date,
-    default: Date.now(),
+    default: new Date(),
   },
   deliverBy: Date,
   span: Number,

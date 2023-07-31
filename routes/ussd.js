@@ -64,7 +64,9 @@ router.post("/", async (req, res) => {
     if (orders.length > 0) {
       data = orders
         .sort((a, b) => {
-          return new Date(b.orderDate) - new Date(a.orderDate);
+          return (
+            new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+          );
         })
         .map((order, index) => {
           return `${index + 1} : ${order.status} - ${order.orderId}  \n\n`;
@@ -75,6 +77,11 @@ router.post("/", async (req, res) => {
     }
     response = `CON Recent orders. \n ${data}`;
   }
+
+  //view order
+  // else if (textArr.length === 6) {
+  //   const orderIndex = textArr[5];
+  // }
 
   //book appointment
   else if (text == "3") {
