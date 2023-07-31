@@ -25,3 +25,5 @@ app.listen(port, () => {
   DbConnect();
   console.log("Server running on port " + port);
 });
+
+module.exports = app;
